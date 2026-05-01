@@ -23,12 +23,37 @@ if (!isset($_SESSION["user_email"])) {
     </div>
 
     <h2 class="form-title">
-        Welcome, <?php echo htmlspecialchars($_SESSION["user_name"]); ?>
+        Welcome, <?php echo htmlspecialchars($_SESSION["user_name"]); ?> 👋
     </h2>
 
-    <a href="logout.php">
-        <button class="btn">Logout</button>
-    </a>
+    <!-- ✅ FEATURE LINKS -->
+    <div class="dashboard-links">
+
+        <h3>Product Management</h3>
+        <a href="add_product.php">
+            <button class="btn">➕ Add Product</button>
+        </a>
+
+        <a href="view_products.php">
+            <button class="btn">📦 View Products</button>
+        </a>
+
+        <h3>Sales Management</h3>
+        <a href="add_sale.php">
+            <button class="btn">💰 Record Sale</button>
+        </a>
+
+        <a href="view_sales.php">
+            <button class="btn">📊 View Sales</button>
+        </a>
+
+        <br><br>
+
+        <a href="logout.php">
+            <button class="btn logout">Logout</button>
+        </a>
+
+    </div>
 </div>
 
 </body>
