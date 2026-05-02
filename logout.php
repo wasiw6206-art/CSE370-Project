@@ -1,6 +1,10 @@
 <?php
 session_start();
-session_destroy();
+
+$_SESSION["userID"] = "";
+$_SESSION["user_name"] = "";
+$_SESSION["user_email"] = "";
+$_SESSION["reset_email"] = "";
 
 header("Location: index.php");
 exit();

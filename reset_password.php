@@ -5,32 +5,40 @@ require_once "db.php";
 $error = "";
 $success = "";
 
-if (!isset($_SESSION["reset_email"])) {
+if ($_SESSION["reset_email"] == "") {
     header("Location: forgot_password.php");
     exit();
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $new_password = trim($_POST["new_password"]);
-    $confirm_password = trim($_POST["confirm_password"]);
+    $new_password = $_POST["new_password"];
+    $confirm_password = $_POST["confirm_password"];
 
-    if (empty($new_password) || empty($confirm_password)) {
+    if ($new_password == "" || $confirm_password == "") {
         $error = "All fields are required.";
-    } elseif ($new_password !== $confirm_password) {
+    } elseif ($new_password != $confirm_password) {
         $error = "Passwords do not match.";
-    } elseif (strlen($new_password) < 6) {
-        $error = "Password must be at least 6 characters.";
     } else {
-        $email = $_SESSION["reset_email"];
-        $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+        $sql = "SELECT CHAR_LENGTH(?) AS password_length";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$new_password]);
 
-        $stmt = $conn->prepare("UPDATE users SET password = ? WHERE email = ?");
-        $stmt->execute([$hashed_password, $email]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        unset($_SESSION["reset_email"]);
+        if ($row["password_length"] < 6) {
+            $error = "Password must be at least 6 characters.";
+        } else {
+            $email = $_SESSION["reset_email"];
 
-        $success = "Password reset successfully. You can now login.";
-        header("Refresh: 2; URL=index.php");
+            $sql = "UPDATE users SET password = ? WHERE email = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([$new_password, $email]);
+
+            $_SESSION["reset_email"] = "";
+
+            $success = "Password reset successfully. You can now login.";
+            header("Refresh: 2; URL=index.php");
+        }
     }
 }
 ?>
@@ -52,12 +60,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <h2 class="form-title">Reset Password</h2>
 
-    <?php if (!empty($error)): ?>
-        <div class="message error"><?php echo htmlspecialchars($error); ?></div>
+    <?php if ($error != ""): ?>
+        <div class="message error"><?php echo $error; ?></div>
     <?php endif; ?>
 
-    <?php if (!empty($success)): ?>
-        <div class="message success"><?php echo htmlspecialchars($success); ?></div>
+    <?php if ($success != ""): ?>
+        <div class="message success"><?php echo $success; ?></div>
     <?php endif; ?>
 
     <form method="POST" action="">

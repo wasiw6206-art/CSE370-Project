@@ -5,23 +5,33 @@ require_once "db.php";
 $error = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $email = trim($_POST["email"]);
-    $password = trim($_POST["password"]);
+    $email = $_POST["email"];
+    $password = $_POST["password"];
 
-    if (empty($email) || empty($password)) {
+    if ($email == "" || $password == "") {
         $error = "Email and password are required.";
     } else {
-        $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
-        $stmt->execute([$email]);
+        $sql = "SELECT * FROM users WHERE email = ? AND password = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$email, $password]);
 
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user && password_verify($password, $user["password"])) {
+        if ($user) {
             $_SESSION["userID"] = $user["userID"];
             $_SESSION["user_name"] = $user["fullName"];
             $_SESSION["user_email"] = $user["email"];
 
-            header("Location: dashboard.php");
+            if ($user) {
+    $_SESSION["userID"] = $user["userID"];
+    $_SESSION["user_name"] = $user["fullName"];
+    $_SESSION["user_email"] = $user["email"];
+
+        header("Location: search_product.php");
+        exit();
+    } else {
+        $error = "Invalid email or password.";
+    }
             exit();
         } else {
             $error = "Invalid email or password.";
@@ -47,8 +57,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <h2 class="form-title">Login</h2>
 
-    <?php if (!empty($error)): ?>
-        <div class="message error"><?php echo htmlspecialchars($error); ?></div>
+    <?php if ($error != ""): ?>
+        <div class="message error"><?php echo $error; ?></div>
     <?php endif; ?>
 
     <form method="POST" action="">

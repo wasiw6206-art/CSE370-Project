@@ -6,34 +6,41 @@ $error = "";
 $success = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $name = trim($_POST["name"]);
-    $email = trim($_POST["email"]);
-    $phone = trim($_POST["phone"]);
-    $password = trim($_POST["password"]);
-    $confirm_password = trim($_POST["confirm_password"]);
+    $name = $_POST["name"];
+    $email = $_POST["email"];
+    $phone = $_POST["phone"];
+    $password = $_POST["password"];
+    $confirm_password = $_POST["confirm_password"];
 
-    if (empty($name) || empty($email) || empty($phone) || empty($password) || empty($confirm_password)) {
+    if ($name == "" || $email == "" || $phone == "" || $password == "" || $confirm_password == "") {
         $error = "All fields are required.";
-    } elseif ($password !== $confirm_password) {
+    } elseif ($password != $confirm_password) {
         $error = "Passwords do not match.";
-    } elseif (strlen($password) < 6) {
-        $error = "Password must be at least 6 characters.";
     } else {
-        $check = $conn->prepare("SELECT * FROM users WHERE email = ?");
-        $check->execute([$email]);
+        $sql = "SELECT CHAR_LENGTH(?) AS password_length";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$password]);
 
-        if ($check->rowCount() > 0) {
-            $error = "This email is already registered.";
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($row["password_length"] < 6) {
+            $error = "Password must be at least 6 characters.";
         } else {
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            $sql = "SELECT * FROM users WHERE email = ?";
+            $check = $conn->prepare($sql);
+            $check->execute([$email]);
 
-            $stmt = $conn->prepare(
-                "INSERT INTO users (fullName, email, phone, password) VALUES (?, ?, ?, ?)"
-            );
+            $existing_user = $check->fetch(PDO::FETCH_ASSOC);
 
-            $stmt->execute([$name, $email, $phone, $hashed_password]);
+            if ($existing_user) {
+                $error = "This email is already registered.";
+            } else {
+                $sql = "INSERT INTO users (fullName, email, phone, password) VALUES (?, ?, ?, ?)";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute([$name, $email, $phone, $password]);
 
-            $success = "Account created successfully. You can now login.";
+                $success = "Account created successfully. You can now login.";
+            }
         }
     }
 }
@@ -56,12 +63,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <h2 class="form-title">Sign In</h2>
 
-    <?php if (!empty($error)): ?>
-        <div class="message error"><?php echo htmlspecialchars($error); ?></div>
+    <?php if ($error != ""): ?>
+        <div class="message error"><?php echo $error; ?></div>
     <?php endif; ?>
 
-    <?php if (!empty($success)): ?>
-        <div class="message success"><?php echo htmlspecialchars($success); ?></div>
+    <?php if ($success != ""): ?>
+        <div class="message success"><?php echo $success; ?></div>
     <?php endif; ?>
 
     <form method="POST" action="">

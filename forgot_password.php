@@ -6,19 +6,24 @@ $error = "";
 $success = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $email = trim($_POST["email"]);
+    $email = $_POST["email"];
 
-    $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
-    $stmt->execute([$email]);
-
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if (!$user) {
-        $error = "No account found with this email address.";
+    if ($email == "") {
+        $error = "Email address is required.";
     } else {
-        $_SESSION["reset_email"] = $email;
-        $success = "Email verified. You can now reset your password.";
-        header("Refresh: 2; URL=reset_password.php");
+        $sql = "SELECT * FROM users WHERE email = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$email]);
+
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user) {
+            $_SESSION["reset_email"] = $email;
+            $success = "Email verified. You can now reset your password.";
+            header("Refresh: 2; URL=reset_password.php");
+        } else {
+            $error = "No account found with this email address.";
+        }
     }
 }
 ?>
@@ -40,12 +45,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <h2 class="form-title">Forgot Password</h2>
 
-    <?php if (!empty($error)): ?>
-        <div class="message error"><?php echo htmlspecialchars($error); ?></div>
+    <?php if ($error != ""): ?>
+        <div class="message error"><?php echo $error; ?></div>
     <?php endif; ?>
 
-    <?php if (!empty($success)): ?>
-        <div class="message success"><?php echo htmlspecialchars($success); ?></div>
+    <?php if ($success != ""): ?>
+        <div class="message success"><?php echo $success; ?></div>
     <?php endif; ?>
 
     <form method="POST" action="">

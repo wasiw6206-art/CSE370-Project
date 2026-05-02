@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (!isset($_SESSION["user_email"])) {
+if ($_SESSION["user_email"] == "") {
     header("Location: index.php");
     exit();
 }
@@ -23,7 +23,7 @@ if (!isset($_SESSION["user_email"])) {
     </div>
 
     <h2 class="form-title">
-        Welcome, <?php echo htmlspecialchars($_SESSION["user_name"]); ?>
+        Welcome, <?php echo $_SESSION["user_name"]; ?>
     </h2>
 
     <a href="logout.php">
