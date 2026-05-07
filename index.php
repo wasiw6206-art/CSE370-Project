@@ -22,16 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION["user_name"] = $user["fullName"];
             $_SESSION["user_email"] = $user["email"];
 
-            if ($user) {
-    $_SESSION["userID"] = $user["userID"];
-    $_SESSION["user_name"] = $user["fullName"];
-    $_SESSION["user_email"] = $user["email"];
-
-        header("Location: search_product.php");
-        exit();
-    } else {
-        $error = "Invalid email or password.";
-    }
+            header("Location: search_product.php");
             exit();
         } else {
             $error = "Invalid email or password.";
