@@ -26,6 +26,7 @@ if ($searchPhone != "") {
                 customers.fullName,
                 customers.email,
                 cart.productNumber,
+<<<<<<< HEAD
                 productlist.productName,
                 productlist.type,
                 productlist.price,
@@ -35,6 +36,17 @@ if ($searchPhone != "") {
             FROM cart, customers, productlist
             WHERE cart.phoneNumber = customers.phoneNumber
             AND cart.productNumber = productlist.productNumber
+=======
+                ProductList.productName,
+                ProductList.type,
+                ProductList.price,
+                cart.quantity,
+                cart.totalPrice,
+                cart.addedDate
+            FROM cart, customers, ProductList
+            WHERE cart.phoneNumber = customers.phoneNumber
+            AND cart.productNumber = ProductList.productNumber
+>>>>>>> e43f6d20d66a6f26299eb24314683ca4f5d9dc25
             AND cart.phoneNumber = ?";
 
     $stmt = $conn->prepare($sql);
@@ -52,6 +64,7 @@ if ($searchPhone != "") {
                 customers.fullName,
                 customers.email,
                 cart.productNumber,
+<<<<<<< HEAD
                 productlist.productName,
                 productlist.type,
                 productlist.price,
@@ -61,6 +74,17 @@ if ($searchPhone != "") {
             FROM cart, customers, productlist
             WHERE cart.phoneNumber = customers.phoneNumber
             AND cart.productNumber = productlist.productNumber";
+=======
+                ProductList.productName,
+                ProductList.type,
+                ProductList.price,
+                cart.quantity,
+                cart.totalPrice,
+                cart.addedDate
+            FROM cart, customers, ProductList
+            WHERE cart.phoneNumber = customers.phoneNumber
+            AND cart.productNumber = ProductList.productNumber";
+>>>>>>> e43f6d20d66a6f26299eb24314683ca4f5d9dc25
 
     $stmt = $conn->prepare($sql);
     $stmt->execute();

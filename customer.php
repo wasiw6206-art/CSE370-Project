@@ -196,11 +196,14 @@ $points = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <td><?php echo $customer["fullName"]; ?></td>
                         <td><?php echo $customer["phoneNumber"]; ?></td>
                         <td><?php echo $customer["email"]; ?></td>
+<<<<<<< HEAD
                         <td>
                             <a href="purchase_history.php?phoneNumber=<?php echo $customer["phoneNumber"]; ?>">
                                 View History
                             </a>
                         </td>
+=======
+>>>>>>> e43f6d20d66a6f26299eb24314683ca4f5d9dc25
                     </tr>
                 <?php endforeach; ?>
             </table>

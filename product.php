@@ -32,7 +32,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($productName == "" || $productNumber == "" || $price == "" || $type == "" || $locationName == "" || $shelfNumber == "") {
         $error = "All fields are required except Produce Date and Expiry Date.";
     } else {
+<<<<<<< HEAD
         $sql = "SELECT * FROM productlist WHERE productNumber = ?";
+=======
+        $sql = "SELECT * FROM ProductList WHERE productNumber = ?";
+>>>>>>> e43f6d20d66a6f26299eb24314683ca4f5d9dc25
         $stmt = $conn->prepare($sql);
         $stmt->execute([$productNumber]);
 
@@ -41,7 +45,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($existingProduct) {
             $error = "This product number already exists.";
         } else {
+<<<<<<< HEAD
             $sql = "INSERT INTO productlist(productNumber, productName, price, type, produceDate, expiryDate, locationName, shelfNumber)
+=======
+            $sql = "INSERT INTO ProductList(productNumber, productName, price, type, produceDate, expiryDate, locationName, shelfNumber)
+>>>>>>> e43f6d20d66a6f26299eb24314683ca4f5d9dc25
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
             $stmt = $conn->prepare($sql);
@@ -52,7 +60,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 
+<<<<<<< HEAD
 $sql = "SELECT * FROM productlist";
+=======
+$sql = "SELECT * FROM ProductList";
+>>>>>>> e43f6d20d66a6f26299eb24314683ca4f5d9dc25
 $stmt = $conn->prepare($sql);
 $stmt->execute();
 

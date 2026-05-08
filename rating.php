@@ -34,14 +34,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($customer) {
             $customerID = $customer["customerID"];
 
+<<<<<<< HEAD
             $sql = "SELECT * FROM employee WHERE employeeID = ?";
+=======
+            $sql = "SELECT * FROM Employee WHERE employeeID = ?";
+>>>>>>> e43f6d20d66a6f26299eb24314683ca4f5d9dc25
             $stmt = $conn->prepare($sql);
             $stmt->execute([$employeeID]);
 
             $employee = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($employee) {
+<<<<<<< HEAD
                 $sql = "SELECT * FROM productlist WHERE productNumber = ?";
+=======
+                $sql = "SELECT * FROM ProductList WHERE productNumber = ?";
+>>>>>>> e43f6d20d66a6f26299eb24314683ca4f5d9dc25
                 $stmt = $conn->prepare($sql);
                 $stmt->execute([$productNumber]);
 
@@ -90,19 +98,33 @@ $sql = "SELECT
             customers.customerID,
             customers.fullName AS customerName,
             customers.phoneNumber,
+<<<<<<< HEAD
             employee.employeeID,
             employee.fullName AS employeeName,
             productlist.productNumber,
             productlist.productName,
+=======
+            Employee.employeeID,
+            Employee.fullName AS employeeName,
+            ProductList.productNumber,
+            ProductList.productName,
+>>>>>>> e43f6d20d66a6f26299eb24314683ca4f5d9dc25
             rating.deliveryRating,
             rating.employeeBehaviorRating,
             rating.productQualityRating,
             rating.improvement,
             rating.ratingDate
+<<<<<<< HEAD
         FROM rating, customers, employee, productlist
         WHERE rating.customerID = customers.customerID
         AND rating.employeeID = employee.employeeID
         AND rating.productNumber = productlist.productNumber";
+=======
+        FROM rating, customers, Employee, ProductList
+        WHERE rating.customerID = customers.customerID
+        AND rating.employeeID = Employee.employeeID
+        AND rating.productNumber = ProductList.productNumber";
+>>>>>>> e43f6d20d66a6f26299eb24314683ca4f5d9dc25
 
 $stmt = $conn->prepare($sql);
 $stmt->execute();
