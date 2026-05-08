@@ -26,11 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     expiryDate,
                     locationName,
                     shelfNumber
-<<<<<<< HEAD
                 FROM productlist
-=======
-                FROM ProductList
->>>>>>> e43f6d20d66a6f26299eb24314683ca4f5d9dc25
                 WHERE productName LIKE ?";
 
         $stmt = $conn->prepare($sql);

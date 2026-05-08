@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if ($_SESSION["user_email"] == "") {
+if (!isset($_SESSION["user_email"]) || $_SESSION["user_email"] == "") {
     header("Location: index.php");
     exit();
 }
@@ -16,6 +16,8 @@ if ($_SESSION["user_email"] == "") {
 </head>
 <body>
 
+<?php require_once "header.php"; ?>
+
 <div class="auth-card">
     <div class="logo">
         <h1>DreamShop</h1>
@@ -26,8 +28,8 @@ if ($_SESSION["user_email"] == "") {
         Welcome, <?php echo $_SESSION["user_name"]; ?>
     </h2>
 
-    <a href="logout.php">
-        <button class="btn">Logout</button>
+    <a href="search_product.php">
+        <button class="btn">Go to Product Shelf</button>
     </a>
 </div>
 

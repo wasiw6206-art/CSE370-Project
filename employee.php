@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($employeeID == "" || $fullName == "" || $phoneNumber == "" || $email == "" || $position == "" || $hireDate == "" || $salary == "" || $status == "") {
         $error = "All fields are required.";
     } else {
-        $sql = "SELECT * FROM Employee WHERE employeeID = ?";
+        $sql = "SELECT * FROM employee WHERE employeeID = ?";
         $stmt = $conn->prepare($sql);
         $stmt->execute([$employeeID]);
 
@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($existingEmployee) {
             $error = "This employee ID already exists.";
         } else {
-            $sql = "INSERT INTO Employee(employeeID, fullName, phoneNumber, email, position, hireDate, salary, status)
+            $sql = "INSERT INTO employee(employeeID, fullName, phoneNumber, email, position, hireDate, salary, status)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
             $stmt = $conn->prepare($sql);
@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 
-$sql = "SELECT * FROM Employee";
+$sql = "SELECT * FROM employee";
 $stmt = $conn->prepare($sql);
 $stmt->execute();
 

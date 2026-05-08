@@ -24,11 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($supplierName == "" || $phoneNumber == "" || $email == "" || $address == "" || $productNumber == "" || $supplyPrice == "" || $supplyDate == "") {
         $error = "All fields are required.";
     } else {
-<<<<<<< HEAD
         $sql = "SELECT * FROM productlist WHERE productNumber = ?";
-=======
-        $sql = "SELECT * FROM ProductList WHERE productNumber = ?";
->>>>>>> e43f6d20d66a6f26299eb24314683ca4f5d9dc25
         $stmt = $conn->prepare($sql);
         $stmt->execute([$productNumber]);
 
@@ -48,11 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 
-<<<<<<< HEAD
 $sql = "SELECT * FROM productlist";
-=======
-$sql = "SELECT * FROM ProductList";
->>>>>>> e43f6d20d66a6f26299eb24314683ca4f5d9dc25
 $stmt = $conn->prepare($sql);
 $stmt->execute();
 
@@ -65,19 +57,11 @@ $sql = "SELECT
             suppliers.email,
             suppliers.address,
             suppliers.productNumber,
-<<<<<<< HEAD
             productlist.productName,
             suppliers.supplyPrice,
             suppliers.supplyDate
         FROM suppliers, productlist
         WHERE suppliers.productNumber = productlist.productNumber";
-=======
-            ProductList.productName,
-            suppliers.supplyPrice,
-            suppliers.supplyDate
-        FROM suppliers, ProductList
-        WHERE suppliers.productNumber = ProductList.productNumber";
->>>>>>> e43f6d20d66a6f26299eb24314683ca4f5d9dc25
 
 $stmt = $conn->prepare($sql);
 $stmt->execute();
