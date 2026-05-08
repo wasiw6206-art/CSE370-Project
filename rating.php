@@ -34,14 +34,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($customer) {
             $customerID = $customer["customerID"];
 
-            $sql = "SELECT * FROM Employee WHERE employeeID = ?";
+            $sql = "SELECT * FROM employee WHERE employeeID = ?";
             $stmt = $conn->prepare($sql);
             $stmt->execute([$employeeID]);
 
             $employee = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($employee) {
-                $sql = "SELECT * FROM ProductList WHERE productNumber = ?";
+                $sql = "SELECT * FROM productlist WHERE productNumber = ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->execute([$productNumber]);
 
@@ -90,19 +90,19 @@ $sql = "SELECT
             customers.customerID,
             customers.fullName AS customerName,
             customers.phoneNumber,
-            Employee.employeeID,
-            Employee.fullName AS employeeName,
-            ProductList.productNumber,
-            ProductList.productName,
+            employee.employeeID,
+            employee.fullName AS employeeName,
+            productlist.productNumber,
+            productlist.productName,
             rating.deliveryRating,
             rating.employeeBehaviorRating,
             rating.productQualityRating,
             rating.improvement,
             rating.ratingDate
-        FROM rating, customers, Employee, ProductList
+        FROM rating, customers, employee, productlist
         WHERE rating.customerID = customers.customerID
-        AND rating.employeeID = Employee.employeeID
-        AND rating.productNumber = ProductList.productNumber";
+        AND rating.employeeID = employee.employeeID
+        AND rating.productNumber = productlist.productNumber";
 
 $stmt = $conn->prepare($sql);
 $stmt->execute();

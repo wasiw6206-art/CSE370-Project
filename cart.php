@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $customer = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($customer) {
-            $sql = "SELECT * FROM ProductList WHERE productNumber = ?";
+            $sql = "SELECT * FROM productlist WHERE productNumber = ?";
             $stmt = $conn->prepare($sql);
             $stmt->execute([$productNumber]);
 
@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             if ($product) {
                 $sql = "INSERT INTO cart(phoneNumber, productNumber, quantity, totalPrice, addedDate)
                         SELECT ?, productNumber, ?, price * ?, CURDATE()
-                        FROM ProductList
+                        FROM productlist
                         WHERE productNumber = ?";
 
                 $stmt = $conn->prepare($sql);
@@ -57,14 +57,14 @@ $sql = "SELECT
             customers.fullName,
             customers.email,
             cart.productNumber,
-            ProductList.productName,
-            ProductList.price,
+            productlist.productName,
+            productlist.price,
             cart.quantity,
             cart.totalPrice,
             cart.addedDate
-        FROM cart, customers, ProductList
+        FROM cart, customers, productlist
         WHERE cart.phoneNumber = customers.phoneNumber
-        AND cart.productNumber = ProductList.productNumber";
+        AND cart.productNumber = productlist.productNumber";
 
 $stmt = $conn->prepare($sql);
 $stmt->execute();

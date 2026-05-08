@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     expiryDate,
                     locationName,
                     shelfNumber
-                FROM ProductList
+                FROM productlist
                 WHERE productName LIKE ?";
 
         $stmt = $conn->prepare($sql);
